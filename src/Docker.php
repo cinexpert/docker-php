@@ -24,7 +24,7 @@ class Docker extends Client
     /**
      * {@inheritdoc}
      */
-    public function containerAttach(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function containerAttach(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new ContainerAttach($id, $queryParameters), $fetch);
     }
@@ -32,7 +32,7 @@ class Docker extends Client
     /**
      * {@inheritdoc}
      */
-    public function containerAttachWebsocket(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function containerAttachWebsocket(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new ContainerAttachWebsocket($id, $queryParameters), $fetch);
     }
@@ -40,7 +40,7 @@ class Docker extends Client
     /**
      * {@inheritdoc}
      */
-    public function containerLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function containerLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new ContainerLogs($id, $queryParameters), $fetch);
     }
@@ -72,7 +72,7 @@ class Docker extends Client
     /**
      * {@inheritdoc}
      */
-    public function imagePush(string $name, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
+    public function imagePush(string $name, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         if (isset($headerParameters['X-Registry-Auth']) && $headerParameters['X-Registry-Auth'] instanceof AuthConfig) {
             $headerParameters['X-Registry-Auth'] = \base64_encode($this->serializer->serialize($headerParameters['X-Registry-Auth'], 'json'));

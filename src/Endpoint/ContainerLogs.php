@@ -11,15 +11,18 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ContainerLogs extends BaseEndpoint
 {
-    protected function transformResponseBody(string $body, int $status, SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
-        if (200 === $status && DockerRawStream::HEADER === $contentType) {
-            $stream = Stream::create($body);
+        $body   = $response->getBody();
+        $status = $response->getStatusCode();
+
+        if (200 === $response->getStatusCode() && DockerRawStream::HEADER === $contentType) {
+            $stream = Stream::create();
             $stream->rewind();
 
             return new DockerRawStream($stream);
         }
 
-        return parent::transformResponseBody($body, $status, $serializer, $contentType);
+        return parent::transformResponseBody($response, $serializer, $contentType);
     }
 }

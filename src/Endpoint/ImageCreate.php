@@ -11,8 +11,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ImageCreate extends BaseEndpoint
 {
-    protected function transformResponseBody(string $body, int $status, SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
+        $body   = $response->getBody();
+        $status = $response->getStatusCode();
+
         if (200 === $status) {
             $stream = Stream::create($body);
             $stream->rewind();
@@ -20,6 +23,6 @@ class ImageCreate extends BaseEndpoint
             return new CreateImageStream($stream, $serializer);
         }
 
-        return parent::transformResponseBody($body, $status, $serializer, $contentType);
+        return parent::transformResponseBody($response, $serializer, $contentType);
     }
 }

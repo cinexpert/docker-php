@@ -27,7 +27,7 @@ class ContainerAttachWebsocket extends BaseEndpoint
         );
     }
 
-    protected function transformResponseBody(string $body, int $status, SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
     {
         if (200 === $status && DockerRawStream::HEADER === $contentType) {
             $stream = Stream::create($body);
